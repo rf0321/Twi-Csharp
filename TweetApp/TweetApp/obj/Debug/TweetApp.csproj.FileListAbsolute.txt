@@ -1,0 +1,8 @@
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\bin\Debug\TweetApp.exe.config
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\bin\Debug\TweetApp.exe
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\bin\Debug\TweetApp.pdb
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\obj\Debug\TweetApp.csprojResolveAssemblyReference.cache
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\obj\Debug\TweetApp.Properties.Resources.resources
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\obj\Debug\TweetApp.csproj.GenerateResource.Cache
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\obj\Debug\TweetApp.exe
+d:\users\ryoya\documents\visual studio 2015\Projects\TweetApp\TweetApp\obj\Debug\TweetApp.pdb
