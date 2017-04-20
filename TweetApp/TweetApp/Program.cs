@@ -46,8 +46,8 @@ namespace TweetApp
             }
             public void OnClickTweetButton(object sender, EventArgs e)
             {
-                var twitter = new TwitterAPI("o9Osz8TFS6JIFDsfOQn3UjwXz", "kvaR1DSKoSCQvMwy7IGKa7lCN6pt1wFixLB2lQmiNIm1ma6kPI", 
-                 "3103766516-FbGQouXoqeoSEjKPiXII2NQGyQ9UwsZzrC4enct", "O9DVRdtPKVrRC4YQjmWwlB4CU16JN9DPeK3pextwNUSEX");
+                var twitter = new TwitterAPI("your consumerkey", "your consumerSecret", 
+                 "your accessToken", "your accessTokenSecret");
                 twitter.Tweet("Hello");
             }
         }
