@@ -48,7 +48,7 @@ namespace TweetApp
             {
                 var twitter = new TwitterAPI("your consumerkey", "your consumerSecret", 
                  "your accessToken", "your accessTokenSecret");
-                twitter.Tweet("Hello");
+                twitter.Tweet("Hello");　//tweet内容
             }
         }
     }
