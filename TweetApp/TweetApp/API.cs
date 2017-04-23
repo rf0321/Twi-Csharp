@@ -16,78 +16,128 @@ namespace System.Twitter
 {
     class TwitterAPI
     {
-       private readonly string t_ConsumerKey; //APIたたくのにいるトークンキーたち
-       private readonly string t_ConsumerSecret;
-       private readonly string t_AccessToken;
-       private readonly string t_AccessTokenSecret;
-        const string TwitterApiBaseUrl = "https://api.twitter.com/1.1/";
-      
-
-        readonly HMACSHA1 SignatureHashCode;
-        readonly DateTime UnixTimeStamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private readonly string t_ConsumerKey; //APIたたくのにいるトークンキーたち
+        private readonly string t_AccessToken;
+        private readonly string t_AccessTokenSecret;
+        private readonly string signatureKey;
+        const string API_BASE_URL = "https://api.twitter.com/";
 
         public  TwitterAPI(string t_ConsumerKey, string t_ConsumerSecret, string t_AccessToken, string t_AccessTokenSecret)
         {
+            Net.ServicePointManager.Expect100Continue = false;
             this.t_ConsumerKey = t_ConsumerKey;
-            this.t_ConsumerSecret = t_ConsumerSecret;
             this.t_AccessToken = t_AccessToken;
             this.t_AccessTokenSecret = t_AccessTokenSecret;
-
-            SignatureHashCode = new HMACSHA1(new ASCIIEncoding().GetBytes(string.Format("{0}&{1}", t_ConsumerSecret,t_AccessTokenSecret)));         
+            signatureKey = string.Format("{0}&{1}", Uri.EscapeDataString(t_ConsumerSecret), Uri.EscapeDataString(t_AccessTokenSecret));        
         }
-        public Task<string>Tweet(string text)
+
+        public Task<string> Tweet(string text)
         {
-            var DATA = new Dictionary<string, string>
+            var param = new Dictionary<string, string>
             {
-                {"stauts",text },
-                {"trim_user","1" }
+                { "stauts",text },
+                { "trim_user","1" }
             };
-            return SEND_REQUEST("statuses/update.json",DATA);
+            return SendPostRequest("1.1/statuses/update.json", param);
         }
-        Task<string>SEND_REQUEST(string URL, Dictionary<string, string> DATA)
-        {
-            var Full_URL = TwitterApiBaseUrl + URL;
-            var timestamp = (int)((DateTime.UtcNow-UnixTimeStamp).TotalSeconds);
-             DATA.Add("oauth_consumer_key", t_ConsumerKey);
-             DATA.Add("oauth_signature_method", "HMAC-SHA1");
-             DATA.Add("oauth_timestamp", timestamp.ToString());
-             DATA.Add("oauth_nonce", "a");
-             DATA.Add("oauth_token", t_AccessToken);
-             DATA.Add("oauth_version", "1.0");
 
-            DATA.Add("oauth_signature", GenerateSignature(Full_URL, DATA));
-            string oAuthHeader = GenerateOAuthHeader(DATA);
-            var formData = new FormUrlEncodedContent(DATA.Where(kvp => !kvp.Key.StartsWith("oauth_")));
-
-            return SEND_REQUEST(Full_URL, oAuthHeader, formData);
-        }
-        string GenerateSignature(string URL, Dictionary<string, string> DATA)
+        private async Task<string> SendPostRequest(string endpoint, IEnumerable<KeyValuePair<String, String>> param)
         {
-            var SigString = string.Join("&", DATA.Union(DATA).Select(kvp => string.Format("{0}={1}", Uri.EscapeDataString(kvp.Key),
-                Uri.EscapeDataString(kvp.Value))).OrderBy(s => s));
-
-            var FULL_SIGDATA=string.Format("{0}&{1}&{2}","POST", Uri.EscapeDataString(URL),
-            Uri.EscapeDataString(SigString.ToString()));
-            return Convert.ToBase64String(SignatureHashCode.ComputeHash(new ASCIIEncoding().GetBytes(FULL_SIGDATA.ToString())));
-        }
-        string GenerateOAuthHeader(Dictionary<string, string> DATA)
-        {
-            return "OAuth " + string.Join(", ",DATA
-            .Where(kvp => kvp.Key.StartsWith("oauth_"))
-            .Select(kvp => string.Format("{0}=\"{1}\"", Uri.EscapeDataString(kvp.Key), Uri.EscapeDataString(kvp.Value)))
-            .OrderBy(s => s));
-        }
-        async Task<string> SEND_REQUEST(string FUll_URL, string oAuthHeader, FormUrlEncodedContent formData)
-        {
+            var url = API_BASE_URL + endpoint;
             using (var http = new HttpClient())
             {
-                http.DefaultRequestHeaders.Add("Authorization", oAuthHeader);
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(url),
+                    Method = HttpMethod.Post,
+                    Content = new FormUrlEncodedContent(param)
+                };
+                request.Headers.Add("Authorization", GenerateOAuthHeader(url, "POST", param));
 
-                var httpResp = await http.PostAsync(FUll_URL, formData);
+                var httpResp = await http.SendAsync(request);
                 var respBody = await httpResp.Content.ReadAsStringAsync();
 
                 return respBody;
             }
+        }
+
+        private async Task<string> SendGetRequest(string endpoint)
+        {
+            var url = API_BASE_URL + endpoint;
+            using (var http = new HttpClient())
+            {
+                http.DefaultRequestHeaders.Add("Authorization", GenerateOAuthHeader(url, "GET", null));
+
+                var httpResp = await http.GetAsync(url);
+                var respBody = await httpResp.Content.ReadAsStringAsync();
+
+                return respBody;
+            }
+        }
+
+        private string GenerateOAuthHeader(string url, string method, IEnumerable<KeyValuePair<String, String>> param)
+        {
+            var unixTimeStamp = Convert.ToInt64(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString();
+            var header = new Dictionary<String, String>
+            {
+                { "oauth_consumer_key", t_ConsumerKey },
+                { "oauth_signature_method", "HMAC-SHA1" },
+                { "oauth_timestamp", unixTimeStamp },
+                { "oauth_nonce", GenerateOAuthNonce() },
+                { "oauth_token", t_AccessToken },
+                { "oauth_version", "1.0" },
+            };
+            header = ToEscapedDictionary(header);
+            header.Add("oauth_signature", GenerateSignature(url, method, header.Concat(ToEscapedDictionary(param))));
+
+            return "OAuth " + string.Join(", ", OrderByKey(header).Select(kvp => PairFormat("{0}=\"{1}\"", kvp)));
+        }
+
+        private string GenerateSignature(string url, string method, IEnumerable<KeyValuePair<String, String>> param)
+        {
+            var hash = new HMACSHA1(Encoding.ASCII.GetBytes(signatureKey));
+            var builtParam = string.Join("&", OrderByKey(param).Select(kvp => PairFormat("{0}={1}", kvp)));
+            var data = string.Format("{0}&{1}&{2}", method, Uri.EscapeDataString(url), builtParam);
+            var hasedData = hash.ComputeHash(Encoding.ASCII.GetBytes(data));
+
+            return Convert.ToBase64String(hasedData);
+        }
+
+        private Dictionary<String, String> ToEscapedDictionary(IEnumerable<KeyValuePair<String, String>> src)
+        {
+            
+            return src.ToDictionary(kvp => Uri.EscapeUriString(kvp.Key), kvp => Uri.EscapeUriString(kvp.Value));
+        }
+
+        private IEnumerable<KeyValuePair<String, String>> OrderByKey(IEnumerable<KeyValuePair<String, String>> src)
+        {
+            return src.OrderBy(kvp => kvp.Key);
+        }
+
+        private String GenerateOAuthNonce()
+        {
+            var random = new Random();
+            return random.Next(123400, 9999999).ToString(); // 適当に拾ってきた
+        }
+
+        private String PairFormat(string format, KeyValuePair<String, String> src)
+        {
+            return string.Format(format, src.Key, src.Value);
+        }
+
+        /*public void getPINCode()
+        {
+            Diagnostics.Process.Start(API_BASE_URL + "oauth/authorize?oauth_token="
+                + t_AccessToken + "&oauth_token_secret=" + t_AccessTokenSecret);
+        }*/
+
+        static void Main(string[] args)
+        {
+            var api = new TwitterAPI("", "", "", "");
+
+            var task = api.Tweet("");
+            task.Wait();
+            Console.WriteLine(task.Result);
         }
     }
 }
