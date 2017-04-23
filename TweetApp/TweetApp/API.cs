@@ -37,11 +37,10 @@ namespace System.Twitter
         }
         public Task<string>Tweet(string text)
         {
-            var DATA = new Dictionary<string, string>
-            {
-                {"stauts",text },
-                {"trim_user","1" }
-            };
+            var DATA = new Dictionary<string, string>{};
+			DATA.Add("status", text);
+			DATA.Add("trim_user", "1");
+
             return SEND_REQUEST("statuses/update.json",DATA);
         }
         Task<string>SEND_REQUEST(string URL, Dictionary<string, string> DATA)
@@ -73,7 +72,6 @@ namespace System.Twitter
         string GenerateOAuthHeader(Dictionary<string, string> DATA)
         {
             return "OAuth " + string.Join(", ",DATA
-            .Where(kvp => kvp.Key.StartsWith("oauth_"))
             .Select(kvp => string.Format("{0}=\"{1}\"", Uri.EscapeDataString(kvp.Key), Uri.EscapeDataString(kvp.Value)))
             .OrderBy(s => s));
         }

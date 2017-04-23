@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/WinFormTwitterAPP/v15/.suo
+/.vs/*
+/TweetApp/TweetApp/*
+.gitignore
