@@ -10,11 +10,11 @@ namespace TweetApp
     class Program
     {
 
-        /*[STAThread]
+        [STAThread]
         static void Main()
         {
             Application.Run(new Form1());
-        }*/
+        }
         class Form1 : Form
         {
             
