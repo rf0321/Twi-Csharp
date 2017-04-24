@@ -50,7 +50,7 @@ namespace System.Twitter
             DATA.Add("oauth_consumer_key", t_ConsumerKey);
             DATA.Add("oauth_signature_method", "HMAC-SHA1");
             DATA.Add("oauth_timestamp", timestamp.ToString());
-            DATA.Add("oauth_nonce", "a");
+            DATA.Add("oauth_nonce", GenerateNonce());
             DATA.Add("oauth_token", t_AccessToken);
             DATA.Add("oauth_version", "1.0");
 
@@ -73,6 +73,11 @@ namespace System.Twitter
             "OAuth " + string.Join(", ", DATA
             .Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}=\"{Uri.EscapeDataString(kvp.Value)}\"")
             .OrderBy(s => s));
+        
+        static string GenerateNonce()
+        {
+            return new System.Random().Next(123400, int.MaxValue).ToString("X");
+        }
         async Task<string> SEND_REQUEST(string FUll_URL, string oAuthHeader, FormUrlEncodedContent formData)
         {
             using (var http = new HttpClient())
