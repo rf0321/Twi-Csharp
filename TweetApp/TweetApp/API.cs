@@ -16,10 +16,10 @@ namespace System.Twitter
 {
     class TwitterAPI
     {
-        private readonly string t_ConsumerKey; //APIたたくのにいるトークンキーたち
-        private readonly string t_ConsumerSecret;
-        private readonly string t_AccessToken;
-        private readonly string t_AccessTokenSecret;
+        public readonly string t_ConsumerKey; //APIたたくのにいるトークンキーたち
+        public readonly string t_ConsumerSecret;
+        public readonly string t_AccessToken;
+        public readonly string t_AccessTokenSecret;
         const string TwitterApiBaseUrl = "https://api.twitter.com/1.1/";
 
 
