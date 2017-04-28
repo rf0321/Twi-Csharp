@@ -6,7 +6,7 @@ Input your four APITokenKey and please write this code
 ```C#
 using System.Twitter;
 ```
-Tweet function
+Tweet Method
 ```C#
 public void OnClickTweetButton(object sender, EventArgs e)
 {
