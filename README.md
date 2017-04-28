@@ -3,11 +3,11 @@ You can use this library when you want to tweet other Application.This is Simple
 # How to use
 Input your four APITokenKey and please write this code
 
-```csharp:sample
+```C#
 using System.Twitter;
 ```
 Tweet function
-```csharp:sample
+```C#
 public void OnClickTweetButton(object sender, EventArgs e)
 {
   var twitter = new TwitterAPI("your ConsumerKey", "your ConsumerKeySecret",
