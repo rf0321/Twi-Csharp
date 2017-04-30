@@ -13,8 +13,8 @@ public void OnClickTweetButton(object sender, EventArgs e)
   var twitter = new TwitterAPI("your ConsumerKey", "your ConsumerKeySecret",
   "your AccessToken", "your AccessTokenSecret");
 
-   var tweetValue = "HELLO"; //or Textbox.text and so on
-   twitter.Tweet(tweetValue);　//tweet value
+  var tweetValue = "HELLO"; //or Textbox.text and so on
+  twitter.Tweet(tweetValue);　//tweet value
 }
 ```
             
