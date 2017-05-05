@@ -8,7 +8,7 @@ using System.Twitter;
 ```
 Tweet Method
 ```C#
-  var twitter = new TwitterAPI("your ConsumerKey","your ConsumerKeySecret","your AccessToken","your AccessTokenSecret");
+  var twitter = new TwitterAPI(ConsumerKey,ConsumerKeySecret,AccessToken,AccessTokenSecret);
 
   var tweetValue = "HELLO"; //or Textbox.text and so on
   twitter.Tweet(tweetValue);　//tweet value
