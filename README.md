@@ -14,5 +14,5 @@ Tweet method example
   twitter.Tweet(tweetValue);　//tweet value
 ```
             
-# other
+# Other
 Nothing now
