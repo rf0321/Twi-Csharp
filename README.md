@@ -1,6 +1,4 @@
-
-[![](./LICENSE)
-
+Use it for free.
 
 # C# Oauth Twitter Library
 You can use this library when you want to tweet other CsharpApplication.This is simple POST method code.
