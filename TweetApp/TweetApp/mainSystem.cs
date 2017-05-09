@@ -8,10 +8,9 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.IO;
 using System.Web;
-
-//using System.Text;
-//using System.Text.RegularExpressions;
 using System.Xml;
+
+
 namespace System.Twitter
 {
     class TwitterAPI
