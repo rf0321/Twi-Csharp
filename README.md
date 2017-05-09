@@ -1,7 +1,4 @@
-[![licence badge]][licence]
-[![stars badge]][stars]
-[![forks badge]][forks]
-[![issues badge]][issues]
+
 
 # C# Oauth Twitter Library
 You can use this library when you want to tweet other CsharpApplication.This is simple POST method code.
