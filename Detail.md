@@ -11,8 +11,8 @@ Access level	Read and write (modify app permissions)
 ## Consumer Key (API Key)	
 Secret//////// (manage keys and access tokens)
 ## Callback URL	
-None
-Callback URL Locked	No
+None 
+### Callback URL Locked	No
 ### Sign in with Twitter	Yes
 App-only authentication	https://api.twitter.com/oauth2/token
 Request token URL	https://api.twitter.com/oauth/request_token
