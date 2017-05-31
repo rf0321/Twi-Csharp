@@ -1,6 +1,6 @@
 
 
-# C# Oauth Twitter Library
+# C# Oauth Twitter Library (Tweet only)
 You can use this library when you want to tweet other CsharpApplication.This is simple POST method code.
 # How to use
 Input your four API Tokenkey and please write this code
