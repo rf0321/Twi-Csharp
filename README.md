@@ -1,4 +1,4 @@
-[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](./LICENSE)
+[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ItinoseSan/Csharp-Post-Library-for-TwitterAPI/blob/master/LICENCE)
 
 
 # C# Oauth Twitter Library (Tweet only)
