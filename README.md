@@ -1,5 +1,4 @@
-This software is released under the MIT License, see LICENSE.txt.
-
+[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](./LICENSE)
 
 
 # C# Oauth Twitter Library (Tweet only)
