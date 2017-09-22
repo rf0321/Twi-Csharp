@@ -1,4 +1,4 @@
-[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ItinoseSan/Csharp-Post-Library-for-TwitterAPI/blob/master/LICENCE)　![](https://img.shields.io/badge/language-csharp%208-orange.svg)
+[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ItinoseSan/Csharp-Post-Library-for-TwitterAPI/blob/master/LICENCE)　![](https://img.shields.io/badge/language-csharp%20-orange.svg)
 
 
 # C# Oauth Twitter Library (Tweet only)
