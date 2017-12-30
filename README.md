@@ -1,4 +1,4 @@
-[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)]
+![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
 # C# Oauth Twitter Library (Tweet only)
 You can use this library when you want to tweet other CsharpApplication.This is simple POST method code.
