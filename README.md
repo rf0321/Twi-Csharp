@@ -15,6 +15,3 @@ Tweet method example
   var tweetValue = "HELLO"; //or Textbox.text and so on
   twitter.Tweet(tweetValue);　//tweet value
 ```
-            
-# Other
-Nothing now
